@@ -1,4 +1,4 @@
-import "../styles/global.css";
+import "@/styles/global.css";
 
 import { Slot } from "expo-router";
 import { ThemeProvider, DarkTheme } from "@react-navigation/native";

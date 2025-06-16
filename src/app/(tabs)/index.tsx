@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 
-export default function App() {
+export default function Home() {
   return (
-    <View className="bg-zinc-600">
-      <Text className="text-zinc-200 text-xl">Hello World!</Text>
+    <View className="flex-1 p-4 items-center justify-center">
+      <Text className="text-xl text-white">Hello World!</Text>
       <StatusBar style="auto" />
     </View>
   );
