@@ -10,13 +10,18 @@ import {
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 import { supabase } from "@/libs/supabase";
 import { useAuth } from "@/providers/auth-provider";
-import { Post } from "@/types/data";
-import { router } from "expo-router";
 
-const createPost = async ({ content, user_id }: Partial<Post>) => {
+const createPost = async ({
+  content,
+  user_id,
+}: {
+  content: string;
+  user_id: string;
+}) => {
   const { data, error } = await supabase
     .from("posts")
     .insert({ content, user_id })

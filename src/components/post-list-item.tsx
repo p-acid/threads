@@ -3,12 +3,12 @@ import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { Post } from "@/types/data";
+import { Tables } from "@/types/database.types";
 
 dayjs.extend(relativeTime);
 
 interface PostListItemProps {
-  post: Post;
+  post: Tables<"posts"> & { user: Tables<"profiles"> };
 }
 
 export function PostListItem({ post }: PostListItemProps) {
@@ -16,7 +16,7 @@ export function PostListItem({ post }: PostListItemProps) {
     <View className="flex-row border-b border-gray-800/70 p-4">
       <View className="mr-4">
         <Image
-          source={{ uri: post.user.avatar_url }}
+          source={{ uri: post.user.avatar_url ?? "" }}
           className="h-10 w-10 rounded-full"
         />
       </View>
