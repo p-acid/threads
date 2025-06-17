@@ -10,9 +10,14 @@ export default function Home() {
       data={DUMMY_POSTS}
       renderItem={({ item }) => <PostListItem post={item} />}
       ListHeaderComponent={() => (
-        <Link href="/new" className="p-4 text-center text-xl text-blue-500">
-          New Post
-        </Link>
+        <>
+          <Link href="/new" className="p-4 text-center text-xl text-blue-500">
+            New Post
+          </Link>
+          <Link href="/login" className="p-4 text-center text-xl text-blue-500">
+            Login
+          </Link>
+        </>
       )}
     />
   );
