@@ -1,5 +1,4 @@
-import { supabase } from "@/libs/supabase";
-import { useAuth } from "@/providers/auth-provider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   View,
@@ -8,29 +7,47 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import { supabase } from "@/libs/supabase";
+import { useAuth } from "@/providers/auth-provider";
+import { Post } from "@/types/data";
+import { router } from "expo-router";
+
+const createPost = async ({ content, user_id }: Partial<Post>) => {
+  const { data, error } = await supabase
+    .from("posts")
+    .insert({ content, user_id })
+    .select("*")
+    .throwOnError();
+
+  if (error) {
+    console.error(error);
+  }
+
+  return data;
+};
 
 export default function NewScreen() {
   const [text, setText] = useState("");
 
   const { user } = useAuth();
 
-  const onSubmit = async () => {
-    if (!text) return;
+  const queryClient = useQueryClient();
 
-    if (user) {
-      const { error } = await supabase
-        .from("posts")
-        .insert({ content: text, user_id: user.id });
-
-      if (error) {
-        console.error(error);
-      }
-    }
-
-    setText("");
-  };
+  const { mutate, error, isPending } = useMutation({
+    mutationFn: () => createPost({ content: text, user_id: user!.id }),
+    onSuccess: () => {
+      setText("");
+      router.back();
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+    onError: (error) => {
+      Alert.alert(error.message);
+    },
+  });
 
   return (
     <SafeAreaView edges={["bottom"]} className="flex-1 p-4">
@@ -50,9 +67,12 @@ export default function NewScreen() {
           numberOfLines={4}
         />
 
+        <Text className="text-base text-red-500">{error?.message}</Text>
+
         <View className="mt-auto">
           <Pressable
-            onPress={onSubmit}
+            onPress={() => mutate()}
+            disabled={isPending}
             className="self-end rounded-full bg-white px-6 py-3 "
           >
             <Text className="font-bold text-black">Post</Text>
