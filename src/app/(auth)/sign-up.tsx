@@ -15,7 +15,7 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  async function signUpWithEmail() {
+  const signUpWithEmail = async () => {
     if (!email || !password) {
       Alert.alert("이메일 혹은 패스워드를 입력해주세요");
       return;
@@ -35,7 +35,7 @@ export default function SignUp() {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <View className="flex-1 items-center justify-center gap-3 bg-neutral-900 px-6">
