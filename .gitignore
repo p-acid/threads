@@ -38,3 +38,6 @@ yarn-error.*
 
 # supabase
 supabase/
+
+# env
+.env
